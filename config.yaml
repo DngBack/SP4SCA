@@ -1,0 +1,39 @@
+data:
+  ref_h5ad: data/pancreas_ref.h5ad
+  qry_h5ad: data/pancreas_qry.h5ad
+
+keys:
+  label_key: cell_type_coarse
+
+preprocess:
+  batch_key_candidates:
+    - study_id
+    - batch_id
+  min_genes: 200
+  min_cells: 10
+  max_pct_mt: 20.0
+  n_top_genes: 3000
+
+train:
+  seed: 0
+  n_latent: 30
+  max_epochs: 100
+
+eval:
+  n_thresh: 50
+  coverage_targets:
+    - 0.9
+    - 0.7
+    - 0.5
+    - 0.3
+  cm_score: score_conf
+  cm_target_coverage: 0.7
+
+output:
+  preprocessed_h5ad: outputs/pancreas/preprocessed.h5ad
+  model_dir: outputs/models/pancreas_scvi
+  eval_dir: outputs/metrics/pancreas
+  risk_coverage_png: figures/pancreas_risk_coverage.png
+  metrics_csv: outputs/metrics/pancreas/metrics.csv
+  confusion_matrix_csv: outputs/metrics/pancreas/confusion_matrix_accepted.csv
+  sanity_warnings_csv: outputs/metrics/pancreas/sanity_warnings.csv

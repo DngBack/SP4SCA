@@ -10,7 +10,7 @@ Automated single-cell annotation is now routinely performed by transferring labe
 NeurIPS 2026 explicitly lists **AI/ML for health and biotechnology**, **probabilistic methods**, and **theory**, and also encourages **in-depth analysis of existing methods that provide new insights into their limitations or behavior**. This project sits exactly at that intersection: it is biologically grounded, centered on uncertainty-aware selective prediction, and driven by a precise limitation of current reliability guarantees.
 
 ## Problem setup
-We consider supervised reference-to-query cell-type annotation. A model is trained on a labeled reference dataset
+We consider supervised reference-to-query cell-type annotation. A model is trained on a labeled reference datasetd
 \[
 \mathcal{D}_{\mathrm{ref}} = \{(x_i, y_i, b_i)\}_{i=1}^n,
 \]
