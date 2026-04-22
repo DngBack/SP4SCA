@@ -1,0 +1,62 @@
+seed: 7
+
+data:
+  ref_h5ad: ../data/demo_ref.h5ad
+  qry_h5ad: ../data/demo_qry.h5ad
+
+keys:
+  label_key: cell_type_coarse
+  group_keys: [study_id, batch_id]
+  split_key: split
+  ood_key: is_ood
+
+preprocess:
+  batch_key_candidates: [study_id, batch_id]
+  min_genes: 10
+  min_cells: 3
+  max_pct_mt: 60.0
+  n_top_genes: 1000
+
+split:
+  calib_frac: 0.5
+  seed: 7
+  holdout_cell_types: [immune]
+  calib_exclude_ood: true
+
+model:
+  embedding: pca
+  latent_dim: 20
+  classifier_hidden_dim: 64
+  dropout: 0.1
+  classifier_max_iter: 120
+
+scoring:
+  normalize: zscore
+  knn_k: 20
+  support_method: knn_label_agreement
+  lambdas:
+    l1: 1.0
+    l2: 1.0
+    l3: 1.0
+  lambda_grid:
+    l1: [0.5, 1.0, 2.0]
+    l2: [0.0, 0.5, 1.0]
+    l3: [0.0, 0.5, 1.0]
+  lambda_grid:
+    l1: [0.5, 1.0, 2.0]
+    l2: [0.0, 0.5, 1.0]
+    l3: [0.0, 0.5, 1.0]
+
+calibration:
+  alpha: 0.1
+  min_accept: 10
+  mode: standard
+  weight_group_key: study_id
+
+evaluation:
+  target_coverages: [0.5, 0.7, 0.9]
+  n_curve_points: 40
+
+output:
+  root: ../outputs/v1_demo_pca
+  figures_dir: ../figures/v1_demo_pca

@@ -1,0 +1,60 @@
+seed: 42
+
+data:
+  ref_h5ad: ../data/pancreas_ref.h5ad
+  qry_h5ad: ../data/pancreas_qry.h5ad
+
+keys:
+  label_key: cell_type_coarse
+  group_keys: [study_id, batch_id]
+  split_key: split
+  ood_key: is_ood
+
+preprocess:
+  batch_key_candidates: [study_id, batch_id]
+  min_genes: 200
+  min_cells: 10
+  max_pct_mt: 20.0
+  n_top_genes: 3000
+
+split:
+  calib_frac: 0.5
+  seed: 42
+  holdout_cell_types: []
+  calib_exclude_ood: true
+
+model:
+  embedding: scvi
+  batch_key_candidates: [study_id, batch_id]
+  latent_dim: 30
+  max_epochs: 100
+  classifier_hidden_dim: 128
+  dropout: 0.1
+  classifier_max_iter: 200
+
+scoring:
+  normalize: zscore
+  knn_k: 30
+  support_method: knn_label_agreement
+  lambdas:
+    l1: 1.0
+    l2: 1.0
+    l3: 1.0
+  lambda_grid:
+    l1: [0.5, 1.0, 2.0]
+    l2: [0.0, 0.5, 1.0]
+    l3: [0.0, 0.5, 1.0]
+
+calibration:
+  alpha: 0.05
+  min_accept: 20
+  mode: standard
+  weight_group_key: study_id
+
+evaluation:
+  target_coverages: [0.5, 0.7, 0.9]
+  n_curve_points: 80
+
+output:
+  root: ../outputs/v1_cross_donor
+  figures_dir: ../figures/v1_cross_donor
